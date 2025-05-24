@@ -132,7 +132,7 @@ class InterviewApp(QMainWindow):
         except Exception:
             data = {"questions": []}
         cat = self.category_combo.currentText()
-        self.questions = data.get(cat, data.get("questions", []))
+        self.questions = data.get(cat, data.get("questions", []))[:3]
         self.total_questions = len(self.questions)
 
     def start_interview(self):
@@ -150,19 +150,30 @@ class InterviewApp(QMainWindow):
         QTimer.singleShot(500, self.ask_next_question)
 
     def ask_next_question(self):
-        if self.current_question < self.total_questions:
-            q = self.questions[self.current_question]
-            self.status_label.setText(f"Question {self.current_question+1}/{self.total_questions}: {q}")
-            speak(q)
-            audio_file = os.path.join(AUDIO_DIR, f"answer_{self.current_question+1}.wav")
-            record_until_silence(filename=audio_file)
-            text = transcribe(audio_file)
-            self.transcript += text + " "
-            self.current_question += 1
-            self.progress.setValue(self.current_question)
-            QTimer.singleShot(500, self.ask_next_question)
-        else:
-            self.finish_interview()
+     if self.current_question < self.total_questions:
+        q = self.questions[self.current_question]
+        self.status_label.setText(f"Question {self.current_question+1}/{self.total_questions}: {q}")
+        speak(q)
+
+        # Defer actual recording to avoid blocking
+        QTimer.singleShot(100, self.continue_recording)
+     else:
+        self.finish_interview()
+
+    def continue_recording(self):
+     q_number = self.current_question + 1
+     audio_file = os.path.join(AUDIO_DIR, f"answer_{q_number}.wav")
+     record_until_silence(filename=audio_file)
+     text = transcribe(audio_file)
+     if text.strip():
+      self.transcript += text + " "
+     else:
+      print("[Main] No speech detected in this response.")
+
+     self.current_question += 1
+     self.progress.setValue(self.current_question)
+     QTimer.singleShot(500, self.ask_next_question)
+
 
     def finish_interview(self):
         self.status_label.setText("Interview complete. Processing results...")
