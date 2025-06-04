@@ -1,63 +1,134 @@
+# modules/evaluator.py
+
 import json
-import re
 import os
-from collections import Counter
+import re
+from textblob import TextBlob
+import nltk
+from nltk.tokenize import word_tokenize, sent_tokenize
 
-REFERENCE_PATH = os.path.join(os.path.dirname(__file__), '../data/reference_answers.json')
+# Ensure NLTK data is available
+nltk.download('punkt', quiet=True)
 
-FILLER_WORDS = ["um", "uh", "like", "you know", "so", "actually", "basically"]
+# Path to your reference keywords JSON
+REF_PATH = os.path.join(os.path.dirname(__file__), '..', 'data', 'reference_answers.json')
 
-# Load reference key-points
-with open(REFERENCE_PATH, 'r', encoding='utf-8') as f:
-    REFERENCE = json.load(f)
+def load_reference():
+    try:
+        with open(REF_PATH, 'r', encoding='utf-8') as f:
+            return json.load(f)
+    except FileNotFoundError:
+        return {}
 
-def keyword_match_score(question, transcript, keywords):
-    """Returns float score based on how many reference keywords appear in transcript."""
-    transcript = transcript.lower()
-    match_count = sum(1 for kw in keywords if re.search(r"\\b" + re.escape(kw.lower()) + r"\\b", transcript))
-    return match_count / len(keywords) if keywords else 0
+reference_data = load_reference()
 
-def filler_word_penalty(transcript):
-    words = transcript.lower().split()
-    counts = Counter(words)
-    total = sum(counts.values())
-    fillers = sum(counts[w] for w in FILLER_WORDS)
-    return fillers / total if total > 0 else 0
+# Common disfluency fillers
+FILLERS = {"um", "uh", "like", "you know", "so", "actually", "basically", "just", "well", "hmm"}
 
-def sentence_complexity_score(transcript):
-    sentences = [s.strip() for s in transcript.split('.') if s.strip()]
+def count_filler_words(text):
+    tokens = word_tokenize(text.lower())
+    return sum(1 for t in tokens if t in FILLERS)
+
+def vocabulary_score(text):
+    tokens = [t.lower() for t in word_tokenize(text) if t.isalpha()]
+    if not tokens:
+        return 0.0
+    return len(set(tokens)) / len(tokens)  # type–token ratio
+
+def sentiment_score(text):
+    # Polarity in [-1,1] → normalize to [0,1]
+    polarity = TextBlob(text).sentiment.polarity
+    return (polarity + 1) / 2
+
+def structure_score(text):
+    # Ideal avg sentence length ~15 words
+    sentences = sent_tokenize(text)
     if not sentences:
-        return 0
-    avg_len = sum(len(s.split()) for s in sentences) / len(sentences)
-    return min(avg_len / 15, 1)  # Reward average sentence length ~15 words
+        return 0.0
+    lengths = [len(word_tokenize(s)) for s in sentences]
+    avg_len = sum(lengths) / len(lengths)
+    return max(0, 1 - abs(avg_len - 15) / 15)  # perfect at 15 words
+
+def keyword_match_score(questions, text):
+    scores = []
+    lower = text.lower()
+    for q in questions:
+        keys = reference_data.get(q, [])
+        if not keys:
+            continue
+        matches = sum(1 for k in keys if k.lower() in lower)
+        scores.append(matches / len(keys))
+    return sum(scores) / len(scores) if scores else 0.0
 
 def evaluate_transcript(questions, transcript):
-    total_score = 0
-    count = 0
-    remarks = []
+    """
+    Returns a dict with individual metric scores and overall:
+      {
+        'fluency': float,    # 0–10
+        'vocabulary': float, # 0–10
+        'confidence': float, # 0–10
+        'structure': float,  # 0–10
+        'factual': float,    # 0–10
+        'overall': float,    # 0–10
+        'feedback': str
+      }
+    """
+    txt = transcript.strip()
+    tokens = word_tokenize(txt)
+    total_words = len(tokens) or 1
 
-    for q in questions:
-        if q in REFERENCE:
-            score = keyword_match_score(q, transcript, REFERENCE[q])
-            total_score += score
-            count += 1
-    factual_score = (total_score / count) * 10 if count else 5
+    # Fluency = (1 - filler_rate) * 10
+    fillers = count_filler_words(txt)
+    fluency_raw = 1 - min(fillers / total_words, 1.0)
+    fluency = round(fluency_raw * 10, 1)
 
-    # Soft skill analysis
-    filler_penalty = filler_word_penalty(transcript)  # 0 to ~0.1 typical
-    sentence_score = sentence_complexity_score(transcript) * 10
+    # Vocabulary = type–token ratio * 10
+    vocab_raw = vocabulary_score(txt)
+    vocabulary = round(vocab_raw * 10, 1)
 
-    # Combine all
-    final_score = 0.6 * factual_score + 0.2 * (10 - filler_penalty * 100) + 0.2 * sentence_score
-    final_score = max(0, min(final_score, 10))
+    # Confidence = sentiment_score * 10
+    conf_raw = sentiment_score(txt)
+    confidence = round(conf_raw * 10, 1)
 
-    # Feedback summary
-    remarks.append(f"Relevance & correctness: {factual_score:.1f}/10")
-    remarks.append(f"Filler usage penalty: -{filler_penalty * 100:.1f}%")
-    remarks.append(f"Sentence clarity: {sentence_score:.1f}/10")
+    # Structure = structure_score * 10
+    struct_raw = structure_score(txt)
+    structure = round(struct_raw * 10, 1)
 
-    summary = "\n".join(remarks)
-    summary += "\n\nTips: Focus on using fewer filler words, and structure your answers clearly."
+    # Factual = keyword_match_score * 10
+    factual_raw = keyword_match_score(questions, txt)
+    factual = round(factual_raw * 10, 1)
 
-    return round(final_score, 2), summary
+    # Overall weighted combination
+    overall_raw = (
+        0.25 * fluency_raw +
+        0.25 * vocab_raw +
+        0.20 * conf_raw +
+        0.20 * struct_raw +
+        0.10 * factual_raw
+    )
+    overall = round(overall_raw * 10, 1)
 
+    # Feedback suggestions
+    tips = []
+    if fluency_raw < 0.7:
+        tips.append("Try to reduce filler words for smoother speech.")
+    if vocab_raw < 0.3:
+        tips.append("Use a wider range of vocabulary.")
+    if conf_raw < 0.5:
+        tips.append("Speak with more confidence and energy.")
+    if struct_raw < 0.7:
+        tips.append("Structure your answers into clear, complete sentences.")
+    if factual_raw < 0.3:
+        tips.append("Include more relevant points from the question prompt.")
+
+    feedback = "\n".join(tips) if tips else "Great job! Your communication skills look strong."
+
+    return {
+        'fluency': fluency,
+        'vocabulary': vocabulary,
+        'confidence': confidence,
+        'structure': structure,
+        'factual': factual,
+        'overall': overall,
+        'feedback': feedback
+    }

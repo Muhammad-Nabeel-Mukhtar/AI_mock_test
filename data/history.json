@@ -1,0 +1,20 @@
+[
+    {
+        "timestamp": "2025-06-04 14:43",
+        "category": "Technical",
+        "score": 7.1,
+        "feedback": "Great job! Your communication skills look strong."
+    },
+    {
+        "timestamp": "2025-06-04 14:48",
+        "category": "Technical",
+        "score": 7.7,
+        "feedback": "Include more relevant points from the question prompt."
+    },
+    {
+        "timestamp": "2025-06-04 14:50",
+        "category": "Technical",
+        "score": 5.3,
+        "feedback": "Speak with more confidence and energy.\nStructure your answers into clear, complete sentences.\nInclude more relevant points from the question prompt."
+    }
+]

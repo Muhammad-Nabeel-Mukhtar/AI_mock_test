@@ -1,93 +1,55 @@
-
 {
-  "What does ‘service before self’ mean to you in the context of Pakistan’s development?": [
-    "public interest",
-    "sacrifice",
-    "integrity",
-    "nation building"
-  ],
-  "How would you tackle the issue of water scarcity in Pakistan using limited resources?": [
-    "rainwater harvesting",
-    "conservation",
-    "public awareness",
-    "efficient irrigation"
-  ],
-  "Describe a time you demonstrated integrity when no one was watching.": [
-    "honesty",
-    "trust",
-    "ethical behavior",
-    "principles"
-  ],
-  "What reforms would you propose to improve our education system for underprivileged children?": [
-    "access to education",
-    "infrastructure",
-    "teacher training",
-    "scholarships"
-  ],
-  "How can civil servants maintain their neutrality in a politically charged environment?": [
-    "impartiality",
-    "professionalism",
-    "ethics",
-    "accountability"
-  ],
-  "In your opinion, what are the three biggest challenges facing Pakistan over the next decade?": [
-    "economic instability",
-    "security concerns",
-    "education gap",
-    "climate change"
-  ],
-  "Explain how you would balance economic growth and environmental protection in policymaking.": [
-    "sustainable development",
-    "regulations",
-    "renewable energy",
-    "public-private partnership"
-  ],
-  "Tell us about a personal failure and what it taught you about leadership.": [
-    "self-awareness",
-    "resilience",
-    "learning",
-    "adaptability"
-  ],
-  "How would you build trust between government institutions and rural communities?": [
-    "community engagement",
-    "transparency",
-    "feedback mechanisms",
-    "inclusive policies"
-  ],
-  "What role does ethical leadership play in combating corruption?": [
-    "transparency",
-    "accountability",
-    "integrity",
-    "role modeling"
-  ],
-  "Discuss the importance of national cohesion in a multicultural society like Pakistan.": [
-    "unity in diversity",
-    "tolerance",
-    "cultural understanding",
-    "social harmony"
-  ],
-  "If appointed, how would you use limited budgetary funds to advance healthcare in remote areas?": [
-    "mobile clinics",
-    "telemedicine",
-    "capacity building",
-    "public health campaigns"
-  ],
-  "Describe a situation where you stood up for what you believed was right, despite opposition.": [
-    "courage",
-    "conviction",
-    "ethical stance",
-    "leadership"
-  ],
-  "How can a civil servant encourage youth participation in nation-building?": [
-    "mentorship programs",
-    "skill development",
-    "volunteer initiatives",
-    "educational campaigns"
-  ],
-  "What does ‘character development’ mean for a public servant, and how would you cultivate it?": [
-    "self-discipline",
-    "integrity",
-    "continuous learning",
-    "service mindset"
-  ]
+  "What does ‘service before self’ mean to you in the context of Pakistan’s development?": ["public interest", "sacrifice", "integrity", "nation building", "ethical leadership", "accountability", "transparency"],
+  "How would you tackle the issue of water scarcity in Pakistan using limited resources?": ["rainwater harvesting", "conservation", "awareness", "efficient irrigation", "drip irrigation", "greywater reuse", "policy reform"],
+  "Describe a time you demonstrated integrity when no one was watching.": ["honesty", "trust", "ethics", "values", "courage", "accountability", "responsibility"],
+  "What reforms would you propose to improve our education system for underprivileged children?": ["access", "infrastructure", "teacher training", "scholarships", "curriculum", "digital learning", "public-private partnership"],
+  "How can civil servants maintain their neutrality in a politically charged environment?": ["neutrality", "professionalism", "ethics", "merit", "accountability", "transparency", "nonpartisan"],
+  "In your opinion, what are the three biggest challenges facing Pakistan over the next decade?": ["governance", "climate change", "education", "inflation", "security", "energy", "poverty"],
+  "Explain how you would balance economic growth and environmental protection in policymaking.": ["sustainability", "green policy", "environment", "climate", "development", "impact assessment", "renewable energy"],
+  "Tell us about a personal failure and what it taught you about leadership.": ["resilience", "growth", "learning", "reflection", "humility", "accountability", "self-awareness"],
+  "How would you build trust between government institutions and rural communities?": ["outreach", "transparency", "community engagement", "local leadership", "accessibility", "inclusiveness", "feedback"],
+  "What role does ethical leadership play in combating corruption?": ["role model", "zero tolerance", "integrity", "transparency", "ethics", "trust", "whistleblowing"],
+
+  "What would be your first priority if selected for civil service and why?": ["impact", "vision", "priority", "nation", "transparency", "policy", "development"],
+  "How would you use digital tools to bring transparency to public governance?": ["e-governance", "transparency", "data", "public dashboards", "automation", "AI", "monitoring"],
+  "Discuss the importance of gender equality in Pakistan's development.": ["equality", "empowerment", "rights", "education", "workforce", "policy", "representation"],
+  "How would you address the brain drain issue in Pakistan?": ["talent retention", "opportunity", "research", "policy reform", "entrepreneurship", "investment", "mentorship"],
+  "What are your views on privatization of public enterprises?": ["efficiency", "governance", "competition", "transparency", "services", "economy", "oversight"],
+  "How would you approach reforms in the health sector?": ["access", "infrastructure", "insurance", "digitization", "doctors", "awareness", "training"],
+  "Why do you want to join the civil service?": ["contribution", "service", "nation", "leadership", "change", "impact", "commitment"],
+  "How can Pakistan improve its international image?": ["diplomacy", "media", "reforms", "tourism", "investment", "foreign policy", "education"],
+  "What steps should be taken to reduce sectarianism in society?": ["interfaith", "dialogue", "education", "policy", "unity", "tolerance", "regulation"],
+  "How would you address youth unemployment through public policy?": ["skills", "startups", "education", "vocational training", "youth programs", "internships", "entrepreneurship"],
+  "What role do you see for AI and automation in governance?": ["efficiency", "digitization", "transparency", "AI", "service delivery", "data", "policy"],
+  "What is your understanding of good governance?": ["transparency", "accountability", "participation", "rule of law", "responsiveness", "inclusiveness", "efficiency"],
+  "How would you ensure meritocracy in public service?": ["fair recruitment", "exams", "monitoring", "performance", "transparency", "accountability", "audit"],
+  "What is your opinion on freedom of speech vs. national security?": ["balance", "rights", "law", "responsibility", "regulation", "security", "expression"],
+  "Suggest three policies to alleviate rural poverty in Pakistan.": ["agriculture", "jobs", "infrastructure", "education", "microfinance", "health", "skills"],
+  "How do you evaluate Pakistan's energy crisis and its root causes?": ["supply", "demand", "renewables", "circular debt", "inefficiency", "policy", "infrastructure"],
+  "How would you handle media criticism as a civil servant?": ["professionalism", "communication", "facts", "transparency", "accountability", "ethics", "calmness"],
+  "What makes you a suitable candidate for civil service?": ["skills", "values", "vision", "competence", "dedication", "experience", "motivation"],
+  "How would you ensure accountability in a development project?": ["audit", "KPIs", "monitoring", "transparency", "feedback", "reporting", "public review"],
+  "What is your vision for Pakistan in 2047?": ["development", "unity", "education", "governance", "technology", "equity", "prosperity"],
+
+  "Explain the four pillars of Object-Oriented Programming (OOP) with examples.": ["encapsulation", "inheritance", "abstraction", "polymorphism", "object", "class", "example"],
+  "How does a binary search tree work, and what is its time complexity for insertion, deletion, and lookup?": ["binary tree", "log n", "insert", "delete", "search", "traversal", "balanced"],
+  "Describe how the quicksort algorithm operates and analyze its average and worst-case time complexities.": ["quicksort", "pivot", "partition", "recursion", "O(n log n)", "O(n²)", "divide"],
+  "What is Big O notation, and how would you compare O(n log n) vs. O(n²)?": ["Big O", "efficiency", "complexity", "scalability", "growth", "comparison", "analysis"],
+  "Explain the difference between SQL and NoSQL databases and give a use case for each.": ["relational", "non-relational", "schema", "ACID", "scalability", "JSON", "query"],
+  "How does RESTful API design work, and what are the main HTTP methods you’d use?": ["REST", "HTTP", "GET", "POST", "PUT", "DELETE", "resource"],
+  "Describe how garbage collection works in managed languages like Java or C#.": ["memory", "heap", "GC", "mark-sweep", "reference", "automatic", "performance"],
+  "What is multithreading, and how do you prevent race conditions in a concurrent program?": ["thread", "mutex", "lock", "synchronization", "race", "deadlock", "parallel"],
+  "Explain the Model-View-Controller (MVC) pattern and where you have applied it.": ["MVC", "model", "view", "controller", "separation", "UI", "architecture"],
+  "How do you optimize a slow database query? List at least three strategies.": ["indexing", "query plan", "caching", "normalization", "denormalization", "sharding", "execution plan"],
+
+  "How would you develop a go-to-market strategy for a new product in a competitive market?": ["market research", "positioning", "branding", "target audience", "launch", "strategy", "value"],
+  "Explain the components of a SWOT analysis and how you’d apply it to a small business.": ["strengths", "weaknesses", "opportunities", "threats", "assessment", "business", "strategy"],
+  "What tactics would you use to scale a startup from 100 to 1,000 customers?": ["growth", "acquisition", "marketing", "referral", "partnerships", "ads", "funnel"],
+  "How do you manage cash flow in periods of rapid growth?": ["cash", "forecasting", "reserves", "liquidity", "burn rate", "budget", "control"],
+  "Describe your approach to identifying and segmenting key customer demographics.": ["segmentation", "demographics", "psychographics", "persona", "targeting", "data", "analysis"],
+  "What metrics would you track to measure the ROI of a marketing campaign?": ["ROI", "CTR", "LTV", "CAC", "engagement", "conversion", "traffic"],
+  "How would you build and sustain brand awareness on a limited budget?": ["SEO", "social media", "PR", "influencer", "content", "events", "branding"],
+  "Explain the importance of supply chain management and how you’d optimize it.": ["logistics", "inventory", "efficiency", "JIT", "forecasting", "distribution", "planning"],
+  "What strategies would you implement to handle aggressive competition in your industry?": ["differentiation", "pricing", "innovation", "quality", "marketing", "focus", "niche"],
+  "How do you create a performance management system that aligns with company goals?": ["KPIs", "OKRs", "feedback", "goals", "alignment", "metrics", "rewards"]
 }

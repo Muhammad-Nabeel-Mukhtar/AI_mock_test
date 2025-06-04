@@ -12,7 +12,7 @@ def _callback(indata, frames, time_info, status):
     except Exception as e:
         print(f"[Recorder] Callback error: {e}")
 
-def record_until_silence(filename='data/audio/answer.wav', sample_rate=16000, silence_sec=2, min_speech_sec=2):
+def record_until_silence(filename='data/audio/answer.wav', sample_rate=16000, silence_sec=2, min_speech_sec=2, print_debug=True):
     q.queue.clear()
 
     try:
@@ -24,7 +24,8 @@ def record_until_silence(filename='data/audio/answer.wav', sample_rate=16000, si
             callback=_callback
         )
         stream.start()
-        print("[Recorder] Audio stream started.")
+        if print_debug:
+            print("[Recorder] Audio stream started.")
 
         frames = []
         silent_chunks = 0
@@ -35,11 +36,21 @@ def record_until_silence(filename='data/audio/answer.wav', sample_rate=16000, si
             try:
                 data = q.get(timeout=10)
             except queue.Empty:
-                print("[Recorder] No audio input received — mic may be muted or blocked.")
+                if print_debug:
+                    print("[Recorder] No audio input received — mic may be muted or blocked.")
+                break
+            except KeyboardInterrupt:
+                if print_debug:
+                    print("[Recorder] Recording manually interrupted.")
+                break
+            except Exception as e:
+                if print_debug:
+                    print(f"[Recorder] Unexpected error: {e}")
                 break
 
-            if len(data) != 960:  # 480 samples * 2 bytes = 960 bytes
-                print("[Recorder] Skipping invalid chunk.")
+            if len(data) != 960:
+                if print_debug:
+                    print("[Recorder] Skipping invalid chunk.")
                 continue
 
             frames.append(data)
@@ -50,25 +61,29 @@ def record_until_silence(filename='data/audio/answer.wav', sample_rate=16000, si
             else:
                 silent_chunks += 1
                 if (silent_chunks * chunk_duration / 1000 >= silence_sec) and (speaking_duration >= min_speech_sec):
-                    print("[Recorder] Silence detected. Stopping recording.")
+                    if print_debug:
+                        print("[Recorder] Silence detected. Stopping recording.")
                     break
 
         stream.stop()
         stream.close()
-        print("[Recorder] Audio stream stopped.")
+        if print_debug:
+            print("[Recorder] Audio stream stopped.")
 
         if not frames:
-            print("[Recorder] No valid audio recorded.")
+            if print_debug:
+                print("[Recorder] No valid audio recorded.")
             return filename
 
-        wf = wave.open(filename, 'wb')
-        wf.setnchannels(1)
-        wf.setsampwidth(2)
-        wf.setframerate(sample_rate)
-        wf.writeframes(b''.join(frames))
-        wf.close()
+        with wave.open(filename, 'wb') as wf:
+            wf.setnchannels(1)
+            wf.setsampwidth(2)
+            wf.setframerate(sample_rate)
+            wf.writeframes(b''.join(frames))
+
         return filename
 
     except Exception as e:
-        print(f"[Recorder] Failed to start recording: {e}")
+        if print_debug:
+            print(f"[Recorder] Failed to start recording: {e}")
         return filename
